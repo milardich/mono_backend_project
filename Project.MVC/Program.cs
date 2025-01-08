@@ -1,7 +1,12 @@
+using Project.MVC.Models;
+using Project.Service.Dtos;
+using Project.Service.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IVehicleMakeService, VehicleMakeService>();
 
 var app = builder.Build();
 
@@ -25,5 +30,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-
 app.Run();
+
+
+

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Project.Service.Models
 {
-    internal class VehicleModel
+    public class VehicleModel
     {
         [Key]
         public int Id { get; set; }
         public int MakeId { get; set; }
-        public string Name { get; set; }
-        public string Abrv {  get; set; }
+        public required string Name { get; set; }
+        public required string Abrv {  get; set; }
     }
 }

@@ -8,7 +8,7 @@ using Project.Service.Models;
 
 namespace Project.Service.Context
 {
-    internal class VehicleManagementDbContext : DbContext
+    public class VehicleManagementDbContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

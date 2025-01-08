@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Service.Models
+namespace Project.Service.Dtos
 {
-    public class VehicleMake
+    public class VehicleMakeDTO
     {
-        [Key]
-        public int Id { get; set; }
         public required string Name { get; set; }
         public required string Abrv { get; set; }
     }
