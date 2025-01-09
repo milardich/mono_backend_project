@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Project.Service.Context;
-using Project.Service.Dtos;
 using Project.Service.Models;
 
 namespace Project.Service.Services
@@ -19,44 +18,57 @@ namespace Project.Service.Services
             _dbContext = new VehicleManagementDbContext();
         }
 
-        public async Task<bool> CreateVehicleMake(VehicleMakeDTO vehicleMakeDTO)
+        public async Task<bool> CreateVehicleMake(VehicleMake vehicleMake)
         {
-            VehicleMake vehicleMake = new VehicleMake 
-            { 
-                Name = vehicleMakeDTO.Name,
-                Abrv = vehicleMakeDTO.Abrv 
-            };
-
-            _dbContext.VehicleMakes.Add(vehicleMake);
+            await _dbContext.VehicleMakes.AddAsync(vehicleMake);
             int result = await _dbContext.SaveChangesAsync();
             return result == 1;
         }
 
-        public async Task<VehicleMakeDTO> GetVehicleMake(int id)
+        public async Task<VehicleMake> GetVehicleMake(int id)
         {
-            VehicleMake makeModel = await _dbContext.FindAsync<VehicleMake>(id);
-            VehicleMakeDTO makeDTO = new VehicleMakeDTO
-            {
-                Name = makeModel.Name,
-                Abrv = makeModel.Abrv
-            };
-            return await Task.FromResult(makeDTO);
+            VehicleMake vehicleMake = await _dbContext.VehicleMakes
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return await Task.FromResult(vehicleMake);
         }
 
-        public async Task<List<VehicleMakeDTO>> GetAllVehicleMakes()
+        public async Task<List<VehicleMake>> GetAllVehicleMakes()
         {
-            var makes = await _dbContext.VehicleMakes.ToListAsync();
-            List<VehicleMakeDTO> makeDTOs = new List<VehicleMakeDTO>();
-            foreach (var make in makes)
-            {
-                VehicleMakeDTO makeDTO = new VehicleMakeDTO 
-                { 
-                    Abrv = make.Abrv, 
-                    Name = make.Name 
-                };
-                makeDTOs.Add(makeDTO);
-            }
-            return await Task.FromResult(makeDTOs);
+            var vehicleMakes = await _dbContext.VehicleMakes.ToListAsync();
+            return await Task.FromResult(vehicleMakes);
         }
+
+        public async Task<bool> EditVehicleMake(int id, VehicleMake editedVehicleMake)
+        {
+            VehicleMake vehicleMake = await GetVehicleMake(id);
+            if (vehicleMake != null)
+            {
+                vehicleMake.Name = editedVehicleMake.Name;
+                vehicleMake.Abrv = editedVehicleMake.Abrv;
+            }
+            int result = await _dbContext.SaveChangesAsync();
+            return result > 0;
+        }
+
+        public async Task<bool> DeleteVehicleMake(int id)
+        {
+            VehicleMake vehicleMake = await GetVehicleMake(id);
+            if (vehicleMake != null)
+            {
+                _dbContext.VehicleMakes.Attach(vehicleMake);
+                _dbContext.VehicleMakes.Remove(vehicleMake);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        //public async Task<VehicleMake> GetVehicleMake(string name)
+        //{
+        //    var vehicleMake = _dbContext.VehicleMakes
+        //                                .Where(m => m.Name == name)
+        //                                .FirstOrDefault();
+        //    throw new NotImplementedException();
+        //}
     }
 }
