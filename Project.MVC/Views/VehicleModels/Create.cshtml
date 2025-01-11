@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Project.MVC.Models.VehicleModelViewModel
+
+<h1>Create VehicleModel</h1>
+
+<form method="post">
+    <div class="mt-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">Abrv</label>
+        <input type="text" class="form-control" asp-for="Abrv" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">VehicleMake ID</label>
+        <input type="text" class="form-control" asp-for="VehicleMake.Id" />
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>
