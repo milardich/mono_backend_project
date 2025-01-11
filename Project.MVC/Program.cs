@@ -1,12 +1,18 @@
+using Microsoft.EntityFrameworkCore;
 using Project.MVC.Models;
+using Project.Service.Context;
 using Project.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<IVehicleMakeService, VehicleMakeService>();
-builder.Services.AddSingleton<IVehicleModelService, VehicleModelService>();
+builder.Services.AddDbContext<VehicleManagementDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("defaultDb"))
+);
+builder.Services.AddTransient<IVehicleMakeService, VehicleMakeService>();
+builder.Services.AddTransient<IVehicleModelService, VehicleModelService>();
+
 
 var app = builder.Build();
 

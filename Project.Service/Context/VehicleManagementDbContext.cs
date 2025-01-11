@@ -11,17 +11,9 @@ namespace Project.Service.Context
 {
     public class VehicleManagementDbContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-
-        public VehicleManagementDbContext(IConfiguration configuration)
+        public VehicleManagementDbContext(DbContextOptions<VehicleManagementDbContext> options)
+            : base(options)
         {
-            _configuration = configuration;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connectionString = _configuration.GetConnectionString("defaultDb");
-            optionsBuilder.UseNpgsql(connectionString);
         }
 
         public DbSet<VehicleMake> VehicleMakes { get; set; }

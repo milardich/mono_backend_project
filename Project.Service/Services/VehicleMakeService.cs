@@ -62,13 +62,5 @@ namespace Project.Service.Services
             }
             return false;
         }
-
-        //public async Task<VehicleMake> GetVehicleMake(string name)
-        //{
-        //    var vehicleMake = _dbContext.VehicleMakes
-        //                                .Where(m => m.Name == name)
-        //                                .FirstOrDefault();
-        //    throw new NotImplementedException();
-        //}
     }
 }
