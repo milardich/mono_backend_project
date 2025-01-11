@@ -13,9 +13,9 @@ namespace Project.Service.Services
     {
         private readonly VehicleManagementDbContext _dbContext;
 
-        public VehicleMakeService()
+        public VehicleMakeService(VehicleManagementDbContext dbContext)
         {
-            _dbContext = new VehicleManagementDbContext();
+            _dbContext = dbContext;
         }
 
         public async Task<bool> CreateVehicleMake(VehicleMake vehicleMake)

@@ -11,13 +11,11 @@ namespace Project.Service.Services
 {
     public class VehicleModelService : IVehicleModelService
     {
-        private IVehicleMakeService _vehicleMakeService;
-        private VehicleManagementDbContext _dbContext;
+        private readonly VehicleManagementDbContext _dbContext;
         
-        public VehicleModelService(IVehicleMakeService vehicleMakeService) 
+        public VehicleModelService(VehicleManagementDbContext dbContext) 
         { 
-            _vehicleMakeService = vehicleMakeService;
-            _dbContext = new VehicleManagementDbContext();
+            _dbContext = dbContext;
         }
 
         public async Task<bool> CreateVehicleModel(VehicleModel vehicleModel)
