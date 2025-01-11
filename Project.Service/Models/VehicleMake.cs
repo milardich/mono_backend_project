@@ -13,5 +13,6 @@ namespace Project.Service.Models
         public int Id { get; set; }
         public required string Name { get; set; }
         public required string Abrv { get; set; }
+        public List<VehicleModel> VehicleModels { get; set; }
     }
 }

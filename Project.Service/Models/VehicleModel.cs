@@ -11,8 +11,8 @@ namespace Project.Service.Models
     {
         [Key]
         public int Id { get; set; }
-        public int MakeId { get; set; }
         public required string Name { get; set; }
         public required string Abrv {  get; set; }
+        public VehicleMake VehicleMake { get; set; }
     }
 }
