@@ -22,14 +22,6 @@ namespace Project.Service.Services
 
         public async Task<bool> CreateVehicleModel(VehicleModel vehicleModel)
         {
-            //VehicleMake vehicleMake = await _vehicleMakeService.GetVehicleMake(vehicleModel.Id);
-            //vehicleModel.VehicleMake = vehicleMake;
-            //if (vehicleMake.VehicleModels == null)
-            //{
-            //    vehicleMake.VehicleModels = new List<VehicleModel>();
-            //}
-
-            //// WORKS:
             VehicleMake vehicleMake = await _dbContext.VehicleMakes
                         .Include(m => m.VehicleModels)
                         .Where(m => m.Id == vehicleModel.VehicleMake.Id)
@@ -45,14 +37,29 @@ namespace Project.Service.Services
             return result == 1;
         }
 
-        public Task<bool> DeleteVehicleModel(int vehicleMakeId, int vehicleModelId)
+        public async Task<bool> DeleteVehicleModel(int vehicleModelId)
         {
-            throw new NotImplementedException();
+            VehicleModel vehicleModel = await GetVehicleModel(vehicleModelId);
+            if (vehicleModel != null)
+            {
+                _dbContext.VehicleModels.Attach(vehicleModel);
+                _dbContext.VehicleModels.Remove(vehicleModel);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
-        public Task<bool> EditVehicleModel(int vehicleMakeId, int vehicleModelId, VehicleModel editedVehicleModel)
+        public async Task<bool> EditVehicleModel(int vehicleModelId, VehicleModel editedVehicleModel)
         {
-            throw new NotImplementedException();
+            VehicleModel vehicleModel = await GetVehicleModel(vehicleModelId);
+            if (vehicleModel != null)
+            {
+                vehicleModel.Name = editedVehicleModel.Name;
+                vehicleModel.Abrv = editedVehicleModel.Abrv;
+            }
+            int result = await _dbContext.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<List<VehicleModel>> GetAllVehicleModels()
@@ -61,9 +68,14 @@ namespace Project.Service.Services
             return await Task.FromResult(vehicleModels);
         }
         
-        public Task<VehicleModel> GetVehicleModel(int vehicleMakeId, int vehicleModelId)
+        public async Task<VehicleModel> GetVehicleModel(int vehicleModelId)
         {
-            throw new NotImplementedException();
+            VehicleModel vehicleModel = await _dbContext.VehicleModels
+                                        .Where(m => m.Id == vehicleModelId)
+                                        .Include(m => m.VehicleMake)
+                                        .FirstOrDefaultAsync();
+
+            return await Task.FromResult(vehicleModel);
         }
     }
 }
