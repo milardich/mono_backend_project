@@ -20,10 +20,23 @@ namespace Project.MVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(string sortOrder, string searchString)
         {
+            ViewData["NameSort"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
+            ViewData["AbrvSort"] = sortOrder == "abrv_asc" ? "abrv_desc" : "abrv_asc";
+            ViewData["CurrentFilter"] = searchString;
             List<VehicleModelViewModel> viewModels = new List<VehicleModelViewModel>();
-            List<VehicleModel> vehicleModels = await _vehicleModelService.GetAllVehicleModels();
+            List<VehicleModel> vehicleModels;
+
+            if(!String.IsNullOrEmpty(searchString) || !String.IsNullOrEmpty(sortOrder))
+            {
+                vehicleModels = await _vehicleModelService.GetFilteredVehicleModels(sortOrder, searchString);
+            }
+            else
+            {
+                vehicleModels = await _vehicleModelService.GetAllVehicleModels();
+            }
+
             foreach (var vehicleModel in vehicleModels)
             {
                 viewModels.Add(

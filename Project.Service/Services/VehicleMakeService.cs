@@ -34,7 +34,8 @@ namespace Project.Service.Services
 
         public async Task<List<VehicleMake>> GetAllVehicleMakes()
         {
-            var vehicleMakes = await _dbContext.VehicleMakes.ToListAsync();
+            var vehicleMakes = await _dbContext.VehicleMakes
+                .OrderBy(m => m.Name).AsNoTracking().ToListAsync();
             return await Task.FromResult(vehicleMakes);
         }
 

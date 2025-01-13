@@ -10,12 +10,28 @@
 
 <a class="mt-3" asp-action="Create">Click here to create new VehicleModel</a>
 
+<form asp-action="List" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <label>Find by name / abrv: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+            <input type="submit" value="Search" class="btn btn-info" /> |
+            <a asp-action="List">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Abrv</th>
+            <th>
+                Id
+            </th>
+            <th>
+                <a asp-action="List" asp-route-sortOrder="@ViewData["NameSort"]">@Html.DisplayNameFor(model => model[0].Name)</a>
+            </th>
+            <th>
+                <a asp-action="List" asp-route-sortOrder="@ViewData["AbrvSort"]">@Html.DisplayNameFor(model => model[0].Abrv)</a>
+            </th>
             <th>VehicleMake</th>
             <th></th>
         </tr>

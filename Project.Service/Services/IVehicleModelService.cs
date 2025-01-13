@@ -12,6 +12,7 @@ namespace Project.Service.Services
         Task<bool> CreateVehicleModel(VehicleModel vehicleModel);
         Task<VehicleModel> GetVehicleModel(int vehicleModelId);
         Task<List<VehicleModel>> GetAllVehicleModels();
+        Task<List<VehicleModel>> GetFilteredVehicleModels(string sortOrder, string stringSearch);
         Task<bool> EditVehicleModel(int vehicleModelId, VehicleModel editedVehicleModel);
         Task<bool> DeleteVehicleModel(int vehicleModelId);
     }

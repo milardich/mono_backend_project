@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -65,7 +66,30 @@ namespace Project.Service.Services
             List<VehicleModel> vehicleModels = await _dbContext.VehicleModels.Include(m => m.VehicleMake).ToListAsync();
             return await Task.FromResult(vehicleModels);
         }
-        
+
+        public async Task<List<VehicleModel>> GetFilteredVehicleModels(string sortOrder, string stringSearch)
+        {
+            IQueryable<VehicleModel> query = _dbContext.VehicleModels
+                .Where(m => string.IsNullOrEmpty(stringSearch) ||
+                            m.VehicleMake.Name.Contains(stringSearch) ||
+                            m.VehicleMake.Abrv.Contains(stringSearch) ||
+                            m.Name.Contains(stringSearch))
+                .Include(m => m.VehicleMake)
+                .AsNoTracking();
+
+            query = sortOrder switch
+            {
+                "name_asc" => query.OrderBy(m => m.Name),
+                "name_desc" => query.OrderByDescending(m => m.Name),
+                "abrv_asc" => query.OrderBy(m => m.Abrv),
+                "abrv_desc" => query.OrderByDescending(m => m.Abrv),
+                _ => query.OrderBy(m => m.Name),
+            };
+
+            return await query.ToListAsync();
+        }
+
+
         public async Task<VehicleModel> GetVehicleModel(int vehicleModelId)
         {
             VehicleModel vehicleModel = await _dbContext.VehicleModels
